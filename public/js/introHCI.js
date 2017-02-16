@@ -17,6 +17,8 @@ function initializePage() {
 /*
  * Make an AJAX call to retrieve project details and add it in
  */
+var currentId;
+
 function addProjectDetails(e) {
 	// Prevent following the link
 	e.preventDefault();
@@ -25,9 +27,25 @@ function addProjectDetails(e) {
 	var projectID = $(this).closest('.project').attr('id');
 	// get rid of 'project' from the front of the id 'project3'
 	var idNumber = projectID.substr('project'.length);
+   
 
+	$.get("/project/"+idNumber, addProjCBF);
+	 currentId = projectID;
+	console.log("/project/"+idNumber);
 	console.log("User clicked on project " + idNumber);
 }
+
+
+
+function addProjCBF(result) {
+	console.log(result);
+	console.log("#"+currentId + " .details");
+	var projectHTML = '<a href="#" class="thumbnail>' + '<img src="' + result['image'] + '" class="img">' + '<p>' + result['title'] + '</p>' + '<p><small>' + result['date'] + '</small></p></a>';
+	$("#"+currentId + " .details").html(projectHTML);
+	$("#project-container").html(projectHTML);
+	$("#project-description").html(result['summary']);
+} 
+
 
 /*
  * Make an AJAX call to retrieve a color palette for the site

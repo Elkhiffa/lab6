@@ -10,6 +10,7 @@ var handlebars = require('express3-handlebars')
 
 var index = require('./routes/index');
 var project = require('./routes/project');
+var projects = require('./projects.json');
 // Example route
 // var user = require('./routes/user');
 
@@ -38,6 +39,18 @@ if ('development' == app.get('env')) {
 // Add routes here
 app.get('/', index.view);
 app.get('/project/:id', project.projectInfo);
+
+exports.projectInfo = function(req, res) {
+	var projectID =  req.params.id;
+	if (projectID == "random"){
+			projectID = math.floor(Math.random() * 10)
+	} else {
+		projectID = parseInt(id);
+	}
+
+	var project = projects[projectID - 1];
+	res.json(project);
+}
 // Example route
 // app.get('/users', user.list);
 
